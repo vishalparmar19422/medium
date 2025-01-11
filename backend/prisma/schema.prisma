@@ -1,0 +1,32 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int     @id @default(autoincrement())
+  username     String?
+  email String  @unique
+  password String
+  blogs    Blog[]
+}
+
+model Blog {
+  id          Int    @id @default(autoincrement())
+  title       String
+  discription String
+  userId      Int
+  user        User   @relation(fields: [userId], references: [id])
+}
+
+//pooling url "DATABASE_URL="prisma://accelerate.prisma-data.net/?api_key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5IjoiMWNmNDdlZWMtYjM5YS00YjY0LThkODMtM2NmODUxMjkwOWJiIiwidGVuYW50X2lkIjoiYjc5MDk2MjgyNWJmNjFmY2U3NDI4MGQ5MTQ2YzAzZDNkNzRmYTdiNzEwMjNjZTE1ZjMwZmYxNmRkMTM3OWY4YSIsImludGVybmFsX3NlY3JldCI6IjBiYzM0YTBhLWUyMmEtNDhmMS05M2QxLTIzNmI4MmY5N2E1OSJ9._6uhLGA_BD5MWnIz10c3NBB0JldjUDAXKzTYSWG2bMo""
