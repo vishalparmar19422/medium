@@ -25,3 +25,4 @@ dist-ssr
 # Ignore config.ts file in src folder
 /src/config.ts
 
+.env

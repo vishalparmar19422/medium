@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { BACKEND_URL } from "../config";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 
@@ -18,6 +17,8 @@ export interface Blog {
 const useProfileData = () => {
   const [loading, setloading] = useState(true);
   const [userdata, setUserdata] = useState<Userdata>();
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 
   const getBlog = async (token: string, id: number) => {
     try {

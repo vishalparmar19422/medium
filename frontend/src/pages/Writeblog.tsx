@@ -2,7 +2,6 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
-import { BACKEND_URL } from "../config";
 import Nav from "../components/Nav";
 
 const WriteBlog = () => {
@@ -10,8 +9,11 @@ const WriteBlog = () => {
   const [title, setTitle] = useState("");
   const [discription, setdiscription] = useState("");
   const [isPublishing, setIsPublishing] = useState(false);
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 
   const publishBlog  = async()=>{
+    setIsPublishing(true);
     const res = await axios.post(`${BACKEND_URL}/api/v1/blog/create`,{
       title,
       discription

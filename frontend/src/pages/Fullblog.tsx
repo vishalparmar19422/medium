@@ -2,13 +2,14 @@ import Nav from "../components/Nav";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { BACKEND_URL } from "../config";
 import Skeleton from "../components/Skeleton";
 
 function Fullblog() {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [blog, setBlog]: any = useState([]);
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+  
 
   const getBlog = async () => {
     const res = await axios.get(`${BACKEND_URL}/api/v1/blog/get/${id}`, {
