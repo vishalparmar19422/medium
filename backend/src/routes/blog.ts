@@ -86,18 +86,44 @@ BlogRoute.get("/get/:id", async (c) => {
     where: {
       id: Number(id),
     },
+    select:{
+      id:true,
+      title:true,
+      discription:true,
+      createdAt:true,
+      user:{
+        select:{
+          username:true
+        }
+      }
+    }
   });
-  return c.json({ msg: blog });
+  return c.json({ blog });
 });
 
 BlogRoute.get("/bulk", async (c) => {
-  console.log("hello");
   
   try {
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
-    const blogs = await prisma.blog.findMany();
+    const blogs = await prisma.blog.findMany({
+      select:{
+        id:true,
+        title:true,
+        discription:true,
+        userId:true,
+        createdAt:true,
+        user:{
+          select:{
+            username:true
+          }
+        }
+      },
+      orderBy: {
+        createdAt: 'desc', // Sort by createdAt in descending order
+      },
+    });
     return c.json({ blogs });
   } catch (error) {
     console.error("Bulk route error:", error);
@@ -105,6 +131,39 @@ BlogRoute.get("/bulk", async (c) => {
   }
 });
 
-
+BlogRoute.get("/userblog/:id", async (c) => {
+  
+  try {
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+    const id = c.req.param("id");
+    const blogs = await prisma.blog.findMany({
+      where: {
+        userId: Number(id), // Filter by userId
+      },
+      select: {
+        id: true,
+        title: true,
+        discription: true,
+        userId: true,
+        createdAt: true,
+        user: {
+          select: {
+            username: true, // Select the username from the related user
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc', // Sort by createdAt in descending order
+      },
+    });
+    
+    return c.json({ blogs });
+  } catch (error) {
+    console.error("Bulk route error:", error);
+    return c.json({ error: "An error occurred while fetching blogs." }, 500);
+  }
+});
 
 export default BlogRoute;

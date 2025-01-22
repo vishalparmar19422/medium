@@ -15,18 +15,20 @@ datasource db {
 
 model User {
   id       Int     @id @default(autoincrement())
-  username     String?
-  email String  @unique
+  username String?
+  email    String  @unique
   password String
   blogs    Blog[]
 }
 
 model Blog {
-  id          Int    @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   title       String
   discription String
   userId      Int
-  user        User   @relation(fields: [userId], references: [id])
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now()) // Automatically sets the current timestamp when the blog is created
+  published   Boolean  @default(false) // Default value is false (not published)
 }
 
 //pooling url "DATABASE_URL="prisma://accelerate.prisma-data.net/?api_key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5IjoiMWNmNDdlZWMtYjM5YS00YjY0LThkODMtM2NmODUxMjkwOWJiIiwidGVuYW50X2lkIjoiYjc5MDk2MjgyNWJmNjFmY2U3NDI4MGQ5MTQ2YzAzZDNkNzRmYTdiNzEwMjNjZTE1ZjMwZmYxNmRkMTM3OWY4YSIsImludGVybmFsX3NlY3JldCI6IjBiYzM0YTBhLWUyMmEtNDhmMS05M2QxLTIzNmI4MmY5N2E1OSJ9._6uhLGA_BD5MWnIz10c3NBB0JldjUDAXKzTYSWG2bMo""
