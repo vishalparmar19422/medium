@@ -1,7 +1,6 @@
 import  { useState } from 'react'
 import { Link, useNavigate } from 'react-router';
 import axios from 'axios';
-import { BACKEND_URL } from '../config';
 import { ToastContainer, toast } from "react-toastify";
 
 
@@ -11,6 +10,9 @@ function Signin() {
   const [email ,setemail] = useState("");
   const [error,seterror] = useState(false);
   const [Loading,setloading] = useState(false);
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
+  
 
 
 
